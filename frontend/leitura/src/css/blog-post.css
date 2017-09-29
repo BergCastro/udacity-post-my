@@ -1,0 +1,71 @@
+/*!
+ * Start Bootstrap - Blog Post (http://startbootstrap.com/template-overviews/blog-post)
+ * Copyright 2013-2017 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-blog-post/blob/master/LICENSE)
+ */
+
+body {
+    padding-top: 54px;
+}
+
+@media (min-width: 992px) {
+    body {
+        padding-top: 90px;
+    }
+}
+
+.add-post {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+  }
+  .add-post a {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #6493F8;
+    background-image: url('../icons/add.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 28px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    font-size: 0;
+  }
+
+  .remove-btn a {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #D52F31;
+    background-image: url('../icons/x-button.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 28px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    font-size: 0;
+    margin-top: 36px;
+  }
+  .remove-btn-comment a {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #D52F31;
+    background-image: url('../icons/x-button.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 28px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    font-size: 0;
+    margin-top: 15px;
+   
+  }
+  ul {
+    list-style-type:none
+ }
+
+ .vote-list {
+  margin-top: 36px;
+ }
