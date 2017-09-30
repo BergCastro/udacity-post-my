@@ -74,6 +74,7 @@ export const addPost = (title, body, author, category) => {
         },
         body: JSON.stringify({ id, timestamp, title, body, author, category })
     }).then(data => data)
+    
 }
 
 export const removePost = (id) => {
@@ -88,6 +89,20 @@ export const removePost = (id) => {
         body: JSON.stringify({ id })
     }).then().then(data => data)
 }
+export const voteUp = (id, option) => {
+    
+     fetch(`${api}/posts/${id}`, {
+         method: 'POST',
+         headers: {
+             ...headers,
+             'Content-Type': 'application/json',
+ 
+         },
+         body: JSON.stringify({ option })
+     }).then()
+     
+       
+ }
 
 export const removeComment = (id) => {
     

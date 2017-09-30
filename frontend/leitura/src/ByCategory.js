@@ -64,7 +64,7 @@ class ByCategory extends Component {
                     </div>
                 </div>
                 <ListPosts posts={this.state.posts} />
-                <Footer />
+               
             </div>
         )
     }

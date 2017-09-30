@@ -67,7 +67,9 @@ class AddPost extends Component {
                         <div className="form-group">
                             <label htmlFor="categories-post">Category: </label>
                             <select className="form-control" value={this.state.category} onChange={this.handleCategoryChange}>
+                                <option>Selecione uma opção</option>
                                 {this.categories.map((category) => (
+                                    
                                     <option key={category}>{category}</option>
                                 )
                                 )}
@@ -78,14 +80,14 @@ class AddPost extends Component {
                             <label htmlFor="body-post">Body: </label>
                             <textarea value={this.state.body} className="form-control" id="body-post" rows="3" onChange={this.handleBodyChange}></textarea>
                         </div>
-                        <div className="form-group row">
+                        <div className="form-group">
                             <button type="submit" className="btn btn-primary">Submit</button>
-                            <Link className="btn btn-primary" to="/">Voltar</Link>
+                           
                         </div>
                     </form>
                 </div>
 
-                <Footer />
+                
             </div>
         )
     }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Timestamp from 'react-timestamp'
 import { Link } from 'react-router-dom'
 import * as PostsAPI from './PostsAPI'
+import sortBy from 'sort-by'
 
 
 
@@ -13,11 +14,12 @@ class ListPosts extends Component {
     render() {
         const { posts, handlerRemovePost } = this.props
         const postsFiltered = posts.filter((post) => post.deleted === false)
+        const postsSorted = postsFiltered.sort(sortBy('-voteScore'))
         return (
             <div className="container">
 
                 <ul>
-                    {postsFiltered.map((post) => (
+                    {postsSorted.map((post) => (
 
                         <li key={post.title}>
                             <div className="row">

@@ -14,16 +14,33 @@ class Post extends Component {
         comments: [],
         body: '',
         author: '',
+        
 
 
 
+    }
+
+    incrementVote = () => {
+        const id = this.state.post.id
+        PostsAPI.voteUp(this.state.post.id, "upVote")
+        PostsAPI.getPostById(id).then((post) => {    
+            this.setState(post)
+        })
+        
+    }
+    decrementVote = () => {
+        const id = this.state.post.id
+        PostsAPI.voteUp(this.state.post.id, "downVote")
+        PostsAPI.getPostById(id).then((post) => {    
+            this.setState(post)
+        })
     }
 
     componentWillMount() {
         const { id } = this.props
         PostsAPI.getPostById(id).then((post) => {
             PostsAPI.getCommentsByPost(id).then((comments) => {
-                this.setState({ post, comments })
+                this.setState({ post, comments})
             })
 
 
@@ -82,7 +99,7 @@ class Post extends Component {
 
 
                     <p>Posted on <Timestamp time={(timestamp) / 1000} /> </p>
-                    <VoteScore vote={voteScore} /> 
+                    <VoteScore vote={this.state.post.voteScore} increment={this.incrementVote} decrement={this.decrementVote}/> 
                     <hr />
 
                     <p className="lead">{body}</p>
