@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import { Link } from 'react-router-dom'
 
 
@@ -17,7 +16,7 @@ class NavBarMy extends Component {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <a className="navbar-brand" href="#">MyPosts</a>
+          <span className="navbar-brand">MyPosts</span>
         </div>
     
        

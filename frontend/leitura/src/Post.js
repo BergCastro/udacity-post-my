@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import * as PostsAPI from './PostsAPI'
 import Timestamp from 'react-timestamp'
 import NavBarMy from './NavBar'
-import Footer from './Footer'
 import Comment from './Comment'
 import VoteScore from './VoteScore'
 
@@ -14,7 +13,7 @@ class Post extends Component {
         comments: [],
         body: '',
         author: '',
-        
+
 
 
 
@@ -23,15 +22,15 @@ class Post extends Component {
     incrementVote = () => {
         const id = this.state.post.id
         PostsAPI.voteUp(this.state.post.id, "upVote")
-        PostsAPI.getPostById(id).then((post) => {    
+        PostsAPI.getPostById(id).then((post) => {
             this.setState(post)
         })
-        
+
     }
     decrementVote = () => {
         const id = this.state.post.id
         PostsAPI.voteUp(this.state.post.id, "downVote")
-        PostsAPI.getPostById(id).then((post) => {    
+        PostsAPI.getPostById(id).then((post) => {
             this.setState(post)
         })
     }
@@ -40,7 +39,7 @@ class Post extends Component {
         const { id } = this.props
         PostsAPI.getPostById(id).then((post) => {
             PostsAPI.getCommentsByPost(id).then((comments) => {
-                this.setState({ post, comments})
+                this.setState({ post, comments })
             })
 
 
@@ -79,7 +78,7 @@ class Post extends Component {
     }
 
     render() {
-        const { title, author, timestamp, body, voteScore } = this.state.post
+        const { title, author, timestamp, body } = this.state.post
         const { comments } = this.state
         console.log('post')
         return (
@@ -92,14 +91,14 @@ class Post extends Component {
 
 
                     <p className="lead">
-                        by
-                <a href="#"> {author}</a>
+                        by 
+                {" "+author}
                     </p>
 
 
 
                     <p>Posted on <Timestamp time={(timestamp) / 1000} /> </p>
-                    <VoteScore vote={this.state.post.voteScore} increment={this.incrementVote} decrement={this.decrementVote}/> 
+                    <VoteScore vote={this.state.post.voteScore} increment={this.incrementVote} decrement={this.decrementVote} />
                     <hr />
 
                     <p className="lead">{body}</p>

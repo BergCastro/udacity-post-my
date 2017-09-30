@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
-import * as PostsAPI from './PostsAPI'
-import Timestamp from 'react-timestamp'
-import NavBarMy from './NavBar'
-import Footer from './Footer'
+
+
 
 class Comment extends Component {
 
-    state = {
-
-        comment: {}
-
-    }
+   
 
 
 

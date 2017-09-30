@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import NavBarMy from './NavBar';
 import ListPosts from './ListPosts';
-import Footer from './Footer';
 import * as PostsAPI from './PostsAPI'
 import { Link } from 'react-router-dom'
 

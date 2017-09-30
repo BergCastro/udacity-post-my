@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Timestamp from 'react-timestamp'
 import { Link } from 'react-router-dom'
-import * as PostsAPI from './PostsAPI'
 import sortBy from 'sort-by'
 
 
