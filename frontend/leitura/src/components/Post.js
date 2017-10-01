@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import * as PostsAPI from './PostsAPI'
+import * as PostsAPI from '../PostsAPI'
 import Timestamp from 'react-timestamp'
 import NavBarMy from './NavBar'
 import Comment from './Comment'

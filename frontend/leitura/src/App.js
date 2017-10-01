@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './css/blog-post.css';
-import Home from './Home'
-import AddPost from './AddPost'
-import ByCategory from './ByCategory'
-import Post from './Post'
+import Home from './components/Home'
+import AddPost from './components/AddPost'
+import ByCategory from './components/ByCategory'
+import Post from './components/Post'
 
 import { Route } from 'react-router-dom'
 

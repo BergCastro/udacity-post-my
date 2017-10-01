@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import NavBarMy from './NavBar';
-import * as PostsAPI from './PostsAPI'
+import * as PostsAPI from '../PostsAPI'
 
 
 
