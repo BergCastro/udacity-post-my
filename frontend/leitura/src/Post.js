@@ -20,6 +20,7 @@ class Post extends Component {
     }
 
     incrementVote = () => {
+        
         const id = this.state.post.id
         PostsAPI.voteUp(this.state.post.id, "upVote")
         PostsAPI.getPostById(id).then((post) => {
@@ -91,8 +92,8 @@ class Post extends Component {
 
 
                     <p className="lead">
-                        by 
-                {" "+author}
+
+                        {"by " + author}
                     </p>
 
 

@@ -44,6 +44,18 @@ class ByCategory extends Component {
         }
     }
 
+    handlerRemovePost = (event) => {
+        const id = event.target.id
+        PostsAPI.removePost(id)
+        PostsAPI.getAll().then((posts) => {
+            
+            this.setState({ posts })
+
+        })
+      
+        
+    }
+    
     render() {
         return (
             <div>
@@ -62,7 +74,7 @@ class ByCategory extends Component {
                         </div>
                     </div>
                 </div>
-                <ListPosts posts={this.state.posts} />
+                <ListPosts posts={this.state.posts} handlerRemovePost={this.handlerRemovePost} />
                
             </div>
         )
