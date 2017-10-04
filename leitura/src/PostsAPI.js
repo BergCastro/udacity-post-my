@@ -116,8 +116,8 @@ export const removeComment = (id) => {
      }).then(data => data)
  }
 
-export const addComment = (parentId, body, author) => {
-    const id = Math.floor((Math.random() * 100000) + 1)+"";
+export const addComment = (id, parentId, body, author) => {
+   
     const timestamp = Date.now()
     fetch(`${api}/comments`, {
         method: 'POST',

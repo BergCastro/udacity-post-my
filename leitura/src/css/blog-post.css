@@ -69,3 +69,8 @@ body {
  .vote-list {
   margin-top: 36px;
  }
+
+ .loading {
+  align-self: center;
+  margin: 0 auto;
+}

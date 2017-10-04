@@ -10,37 +10,21 @@ class Post extends Component {
     state = {
 
         post: {},
-        comments: [],
+        commentsLocal: [],
         body: '',
         author: '',
 
-
-
-
     }
 
-    incrementVote = () => {
-        
-        const id = this.state.post.id
-        PostsAPI.voteUp(this.state.post.id, "upVote")
-        PostsAPI.getPostById(id).then((post) => {
-            this.setState(post)
-        })
 
-    }
-    decrementVote = () => {
-        const id = this.state.post.id
-        PostsAPI.voteUp(this.state.post.id, "downVote")
-        PostsAPI.getPostById(id).then((post) => {
-            this.setState(post)
-        })
-    }
 
-    componentWillMount() {
+
+    componentDidMount() {
         const { id } = this.props
+        console.log("valor id: " + id)
         PostsAPI.getPostById(id).then((post) => {
             PostsAPI.getCommentsByPost(id).then((comments) => {
-                this.setState({ post, comments })
+                this.setState({ post, commentsLocal: comments })
             })
 
 
@@ -48,14 +32,31 @@ class Post extends Component {
     }
 
     handleSubmit = (event) => {
+        event.preventDefault()
         const parentId = this.state.post.id
         const body = this.state.body
         const author = this.state.author
+        const id = Math.floor((Math.random() * 100000) + 1) + "";
+        const newComment = {
+            id: id,
+            body: body,
+            author: author,
+            deleted: false
+        }
 
-        PostsAPI.addComment(parentId, body, author)
 
+        PostsAPI.addComment(id, parentId, body, author)
+        this.setState({
+            commentsLocal: [...this.state.commentsLocal,
+                newComment
+            ],
+            author: '',
+            body: ''
+
+        })
 
     }
+
     handleAuthorChange = (event) => {
         this.setState({ author: event.target.value });
     }
@@ -65,23 +66,29 @@ class Post extends Component {
     }
 
     handlerRemoveComment = (event) => {
+        event.preventDefault()
         const id = event.target.id
         const { idPost } = this.props
+        const name = event.target.name
+        console.log("Indice: " + name)
         PostsAPI.removeComment(id)
-        PostsAPI.getCommentsByPost(idPost).then((comments) => {
-            this.setState({ comments })
-        })
+        this.setState({
+            commentsLocal: this.state.commentsLocal.filter(comment => comment.id !== id)
 
+        })
 
 
 
 
     }
 
+
+
     render() {
         const { title, author, timestamp, body } = this.state.post
-        const { comments } = this.state
-        console.log('post')
+        const { commentsLocal } = this.state
+
+        console.log(commentsLocal)
         return (
             <div>
                 <NavBarMy />
@@ -99,7 +106,9 @@ class Post extends Component {
 
 
                     <p>Posted on <Timestamp time={(timestamp) / 1000} /> </p>
-                    <VoteScore vote={this.state.post.voteScore} increment={this.incrementVote} decrement={this.decrementVote} />
+                    <VoteScore post={this.state.post} increment={this.incrementVote} decrement={this.decrementVote} />
+
+
                     <hr />
 
                     <p className="lead">{body}</p>
@@ -117,7 +126,7 @@ class Post extends Component {
                                     <input type="text" value={this.state.author} className="form-control" id="author-post" onChange={this.handleAuthorChange} />
                                 </div>
                                 <div className="form-group">
-                                    <textarea className="form-control" rows="3" onChange={this.handleBodyChange}></textarea>
+                                    <textarea className="form-control" value={this.state.body} rows="3" onChange={this.handleBodyChange}></textarea>
                                 </div>
                                 <button type="submit" className="btn btn-primary">Submit</button>
 
@@ -127,16 +136,19 @@ class Post extends Component {
 
                     </div>
 
+                    {commentsLocal.map((comment, index) => (
 
-
-                    {comments.map((comment) => (
-
-                        <Comment key={comment.id} comment={comment} handlerRemoveComment={this.handlerRemoveComment} />
+                        <Comment key={index} indexRemove={index} comment={comment} handlerRemoveComment={this.handlerRemoveComment} />
 
 
                     ))}
 
 
+                    <br />
+                    <br />
+
+                </div>
+                <div>
 
                 </div>
             </div>

@@ -6,17 +6,54 @@ import sortBy from 'sort-by'
 
 
 class ListPosts extends Component {
+   
+    constructor(props) {
+        super(props);
+        this.state = {
+           ordenar: "vote"
+           
 
+        };
+       
+    }
     
+    sortByChange = (event) => {
+        event.preventDefault();
+        const id = event.target.id
+        this.setState((prevState, props) => {
+            return { ordenar: id }
+        })
 
-    
+
+    }
+
     render() {
-        const { posts, handlerRemovePost } = this.props
+        
+       const { posts, handlerRemovePost} = this.props
+       const { ordenar } = this.state
+        console.log("Valor ordenar: "+this.state.ordenar)
         const postsFiltered = posts.filter((post) => post.deleted === false)
-        const postsSorted = postsFiltered.sort(sortBy('-voteScore'))
+        let postsSorted = {}
+        if (ordenar === "vote") {
+            postsSorted = postsFiltered.sort(sortBy('-voteScore'))
+        } else {
+            postsSorted = postsFiltered.sort(sortBy('-timestamp'))
+        }
+
         return (
             <div className="container">
+                <div className="row">
+                    <div className="col-lg-9">
+                    
+                    </div>
+                    <div className="col-lg-3">
+                        Ordenar por:
+                           <a href="" id="date" onClick={this.sortByChange}> Date </a>
+                        --
+                           <a href="" id="vote" onClick={this.sortByChange}> Votes</a>
+                    </div>
 
+                </div>
                 <ul>
                     {postsSorted.map((post) => (
 
@@ -28,10 +65,10 @@ class ListPosts extends Component {
                                     <p>Posted on <Timestamp time={(post.timestamp) / 1000} /></p>
                                 </div>
                                 <div className="col-lg-2">
-                                <h5 className="vote-list">Votes: {post.voteScore}</h5>
+                                    <h5 className="vote-list">Votes: {post.voteScore}</h5>
                                 </div>
                                 <div className="col-lg-1">
-                                    
+
                                     <div className="remove-btn">
                                         <a href="#" id={`${post.id}`} onClick={handlerRemovePost}></a>
                                     </div>
@@ -50,7 +87,7 @@ class ListPosts extends Component {
 
             </div>
 
-        )
+        );
     }
 }
 

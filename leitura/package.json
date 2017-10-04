@@ -1,21 +1,17 @@
 {
-  "name": "leitura-blog",
+  "name": "leitura2",
   "version": "0.1.0",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
-  "main": "index.js",
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "jquery": "^3.2.1",
-    "popper.js": "^1.11.1",
-    "react": "^15.6.1",
-    "react-addons-css-transition-group": "^15.6.0",
-    "react-addons-transition-group": "^15.6.0",
-    "react-dom": "^15.6.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-scripts": "1.0.14",
+    "react-loading": "^0.1.4",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.0.13",
     "react-timestamp": "^4.2.1",
-    "reactstrap": "^4.8.0",
+    "react-transition-group": "^2.2.1",
     "redux": "^3.7.2",
     "sort-by": "^1.2.0"
   },
@@ -24,7 +20,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
+  }
+  ,
   "devDependencies": {},
   "keywords": [
     "udacity",
