@@ -9,7 +9,7 @@ import { createStore } from 'redux'
 import todoApp from './reducers/recuderCombine'
 
 import 'bootstrap/dist/css/bootstrap.css';
-//import 'bootstrap/dist/js/bootstrap.js';
+
 import { BrowserRouter } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
 let store = createStore(todoApp)

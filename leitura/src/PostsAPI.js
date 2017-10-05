@@ -119,6 +119,21 @@ export const voteUp = (id, option) => {
        
  }
 
+ export const updatePost = (id, title, body) => {
+    
+     fetch(`${api}/posts/${id}`, {
+         method: 'PUT',
+         headers: {
+             ...headers,
+             'Content-Type': 'application/json',
+ 
+         },
+         body: JSON.stringify({ title, body })
+     }).then()
+     
+       
+ }
+
 export const removeComment = (id) => {
     
      fetch(`${api}/comments/${id}`, {

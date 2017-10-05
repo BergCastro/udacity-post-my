@@ -23,10 +23,14 @@ class Comment extends Component {
                     </div>
                     <div className="col-lg-2 votescore-comment">
                         <VoteScore entity={comment} tipo={'comment'} />
-                        
+
                     </div>
-                    <div className="col-lg-6">
-                    <div className="remove-btn-comment">
+                    <div className="col-lg-1">
+                        <a href="" onClick={this.openModal}><span className="btn-edit-comment glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+
+                    </div>
+                    <div className="col-lg-5">
+                        <div className="remove-btn-comment">
                             <a href="" id={`${comment.id}`} onClick={handlerRemoveComment}>delete</a>
                         </div>
                     </div>

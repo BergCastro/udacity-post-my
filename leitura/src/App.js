@@ -19,12 +19,7 @@ class App extends Component {
           <Home />
         )} />
 
-
-        <Route exact path='/add' render={() => (
-          <AddPost />
-        )} />
-
-        <Route exact path='/categories' render={() => (
+          <Route exact path='/categories' render={() => (
           <ByCategory />
         )} />
 

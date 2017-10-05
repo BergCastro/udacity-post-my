@@ -64,6 +64,7 @@ class ListPosts extends Component {
                                     <Link to={`/post/${post.id}`}><h3 className="mt-4">{post.title}</h3></Link>
 
                                     <p>Posted on <Timestamp time={(post.timestamp) / 1000} /></p>
+                                    
                                 </div>
                                 <div className="col-lg-2">
                                     <h5 className="vote-list">Votes: {post.voteScore}</h5>
