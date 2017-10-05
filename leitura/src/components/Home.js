@@ -3,7 +3,7 @@ import NavBarMy from './NavBar';
 import ListPosts from './ListPosts';
 import * as PostsAPI from '../PostsAPI'
 import { Link } from 'react-router-dom'
-import Loading from 'react-loading'
+
 
 
 class Home extends Component {
@@ -45,10 +45,7 @@ class Home extends Component {
 
 
     render() {
-
-
-        console.log('home renderizou')
-
+       
         return (
 
             <div>

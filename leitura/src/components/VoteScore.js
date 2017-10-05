@@ -13,43 +13,63 @@ class VoteScore extends Component {
 
 
     }
-
+    componentDidMount(){
+        const voteScore = this.props.entity.voteScore
+        this.setState({
+            votes: voteScore
+        })
+    }
 
     changeVote = (event) => {
         event.preventDefault()
         const id = event.target.id
         const action = event.target.name
-
-
-        PostsAPI.voteUp(id, action)
-        if (action === 'upVote') {
-            this.setState((prevtState) => ({
-                votes: prevtState.votes + 1,
-                getProp: false
-            }))
-        } else {
-            this.setState((prevtState) => ({
-                votes: prevtState.votes - 1,
-                getProp: false
-            }))
+        const { tipo } = this.props
+        if (tipo === 'post') {
+            PostsAPI.voteUp(id, action)
+            if (action === 'upVote') {
+                this.setState((prevtState) => ({
+                    votes: prevtState.votes + 1,
+                    getProp: false
+                }))
+            } else {
+                this.setState((prevtState) => ({
+                    votes: prevtState.votes - 1,
+                    getProp: false
+                }))
+            }
+        }else if(tipo === 'comment'){
+            PostsAPI.voteComment(id, action)
+            if (action === 'upVote') {
+                this.setState((prevtState) => ({
+                    votes: prevtState.votes + 1,
+                    getProp: false
+                }))
+            } else {
+                this.setState((prevtState) => ({
+                    votes: prevtState.votes - 1,
+                    getProp: false
+                }))
+            }
         }
+
 
 
     }
 
 
     render() {
-        const { post } = this.props
+        const { entity } = this.props
 
-        let postId = post.id
+        let entityId = entity.id
         if (this.state.getProp) {
 
-            this.state.votes = post.voteScore
+            this.state.votes = entity.voteScore
 
         }
 
         return (
-            <h4> Votes: {this.state.votes} <a href="#" id={postId} name={'upVote'} onClick={this.changeVote}>+</a>  <a id={postId} name={'downVote'} onClick={this.changeVote} href="#" >-</a></h4>
+            <h4> Votes: {this.state.votes} <a href="" id={entityId} name={'upVote'} onClick={this.changeVote}>+</a>  <a href="" id={entityId} name={'downVote'} onClick={this.changeVote} >-</a></h4>
         )
 
     }

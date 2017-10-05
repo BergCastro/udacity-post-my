@@ -28,6 +28,7 @@ class ByCategory extends Component {
         })
     }
     handleCategoryChange = (event) => {
+        event.preventDefault()
         const category = event.target.value
         if (category === 'all') {
             PostsAPI.getAll().then((posts) => {
@@ -45,6 +46,7 @@ class ByCategory extends Component {
     }
 
     handlerRemovePost = (event) => {
+        event.preventDefault()
         const id = event.target.id
         PostsAPI.removePost(id)
         PostsAPI.getAll().then((posts) => {

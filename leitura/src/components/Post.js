@@ -4,6 +4,7 @@ import Timestamp from 'react-timestamp'
 import NavBarMy from './NavBar'
 import Comment from './Comment'
 import VoteScore from './VoteScore'
+import sortBy from 'sort-by'
 
 class Post extends Component {
 
@@ -36,11 +37,13 @@ class Post extends Component {
         const parentId = this.state.post.id
         const body = this.state.body
         const author = this.state.author
+        
         const id = Math.floor((Math.random() * 100000) + 1) + "";
         const newComment = {
             id: id,
             body: body,
             author: author,
+            voteScore: 1,
             deleted: false
         }
 
@@ -68,9 +71,7 @@ class Post extends Component {
     handlerRemoveComment = (event) => {
         event.preventDefault()
         const id = event.target.id
-        const { idPost } = this.props
-        const name = event.target.name
-        console.log("Indice: " + name)
+              
         PostsAPI.removeComment(id)
         this.setState({
             commentsLocal: this.state.commentsLocal.filter(comment => comment.id !== id)
@@ -87,8 +88,9 @@ class Post extends Component {
     render() {
         const { title, author, timestamp, body } = this.state.post
         const { commentsLocal } = this.state
-
-        console.log(commentsLocal)
+        const commentsSorted = commentsLocal.sort(sortBy('-voteScore'))
+        
+       
         return (
             <div>
                 <NavBarMy />
@@ -106,7 +108,7 @@ class Post extends Component {
 
 
                     <p>Posted on <Timestamp time={(timestamp) / 1000} /> </p>
-                    <VoteScore post={this.state.post} increment={this.incrementVote} decrement={this.decrementVote} />
+                    <VoteScore entity={this.state.post} tipo={'post'} />
 
 
                     <hr />
@@ -136,7 +138,7 @@ class Post extends Component {
 
                     </div>
 
-                    {commentsLocal.map((comment, index) => (
+                    {commentsSorted.map((comment, index) => (
 
                         <Comment key={index} indexRemove={index} comment={comment} handlerRemoveComment={this.handlerRemoveComment} />
 

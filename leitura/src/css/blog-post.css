@@ -35,16 +35,17 @@ body {
 
   .remove-btn a {
     display: block;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: #D52F31;
     background-image: url('../icons/x-button.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 28px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    background-size: 26px;
     font-size: 0;
+    
+    
     margin-top: 36px;
   }
   .remove-btn-comment a {
@@ -73,4 +74,8 @@ body {
  .loading {
   align-self: center;
   margin: 0 auto;
+}
+
+.votescore-comment {
+  margin-top: 15px;
 }

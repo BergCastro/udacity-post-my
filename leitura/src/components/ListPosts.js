@@ -5,6 +5,7 @@ import sortBy from 'sort-by'
 
 
 
+
 class ListPosts extends Component {
    
     constructor(props) {
@@ -31,7 +32,7 @@ class ListPosts extends Component {
         
        const { posts, handlerRemovePost} = this.props
        const { ordenar } = this.state
-        console.log("Valor ordenar: "+this.state.ordenar)
+       
         const postsFiltered = posts.filter((post) => post.deleted === false)
         let postsSorted = {}
         if (ordenar === "vote") {
@@ -44,7 +45,7 @@ class ListPosts extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-9">
-                    
+                        
                     </div>
                     <div className="col-lg-3">
                         Ordenar por:
@@ -69,8 +70,8 @@ class ListPosts extends Component {
                                 </div>
                                 <div className="col-lg-1">
 
-                                    <div className="remove-btn">
-                                        <a href="#" id={`${post.id}`} onClick={handlerRemovePost}></a>
+                                    <div className="remove-btn" >
+                                        <a href=""  id={`${post.id}`} onClick={handlerRemovePost}>delete</a>
                                     </div>
                                 </div>
 
