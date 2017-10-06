@@ -10,7 +10,7 @@ class Comment extends Component {
 
 
     render() {
-        const { comment, handlerRemoveComment } = this.props
+        const { comment, handlerRemoveComment, openModalEditComment } = this.props
 
         return (
 
@@ -26,7 +26,7 @@ class Comment extends Component {
 
                     </div>
                     <div className="col-lg-1">
-                        <a href="" onClick={this.openModal}><span className="btn-edit-comment glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                        <a href=""  onClick={openModalEditComment}><span id={`${comment.id}`} className="btn-edit-comment glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
 
                     </div>
                     <div className="col-lg-5">

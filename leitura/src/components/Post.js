@@ -6,6 +6,7 @@ import Comment from './Comment'
 import VoteScore from './VoteScore'
 import sortBy from 'sort-by'
 import Modal from 'react-modal';
+import ModalEditComment from './ModalEditComment'
 
 const customStyles = {
     content: {
@@ -34,7 +35,9 @@ class Post extends Component {
         author: '',
         modalIsOpen: false,
         titlePost: '',
-        bodyPost: ''
+        bodyPost: '',
+        modalIsOpenComment: false,
+        commentEditing: {}
     }
 
 
@@ -49,12 +52,12 @@ class Post extends Component {
         console.log("valor id: " + id)
         PostsAPI.getPostById(id).then((post) => {
             PostsAPI.getCommentsByPost(id).then((comments) => {
-                this.setState({ 
-                    post, 
+                this.setState({
+                    post,
                     commentsLocal: comments,
                     titlePost: post.title,
                     bodyPost: post.body
-                
+
                 })
             })
 
@@ -117,12 +120,31 @@ class Post extends Component {
         this.setState({ modalIsOpen: true });
     }
 
+    openModalEditComment = (event) => {
+        event.preventDefault()
+        const id = event.target.id
+        
+        console.log("id openModal: "+id)
+        PostsAPI.getCommentById(id).then((comment) =>{
+            this.setState({ 
+                modalIsOpenComment: true,
+                commentEditing: comment
+             })
+        })
+        
+    }
+
     afterOpenModal = () => {
 
     }
 
     closeModal = () => {
         this.setState({ modalIsOpen: false });
+    }
+
+    closeModalEditComment = () => {
+        this.setState({ 
+            modalIsOpenComment: false });
     }
 
     updatePost = (event) => {
@@ -132,11 +154,23 @@ class Post extends Component {
         const id = this.state.post.id
         PostsAPI.updatePost(id, title, body)
         PostsAPI.getPostById(id).then((post) => {
-                this.closeModal()
-                this.setState({ post })
-            
+            this.closeModal()
+            this.setState({ post })
+
         })
-        
+
+    }
+
+    updateComment = (event, id, body) => {
+        event.preventDefault()
+        const idPost = this.state.post.id
+        PostsAPI.updateComment(id, body)
+        PostsAPI.getCommentsByPost(idPost).then((comments) =>  {
+            this.closeModalEditComment()
+            this.setState({ commentsLocal: comments })
+
+        })
+
     }
 
     handleTitlePostChange = (event) => {
@@ -162,34 +196,22 @@ class Post extends Component {
                             <h1 className="mt-4">{title}</h1>
                         </div>
                         <div className="col-lg-1">
-                        <button className="btn btn-primary btn-edit-post" onClick={this.openModal}>Edit</button>
+                            <button className="btn btn-primary btn-edit-post" onClick={this.openModal}>Edit</button>
                         </div>
 
                     </div>
-
-
                     <p className="lead">
 
                         {"by " + author}
                     </p>
 
-
-
                     <p>Posted on <Timestamp time={(timestamp) / 1000} /> </p>
                     <VoteScore entity={this.state.post} tipo={'post'} />
-
-
                     <hr />
-
                     <p className="lead">{body}</p>
-
                     <hr />
-
                     <div className="panel panel-default">
-                    <div className="panel-heading">Leave a Comment:</div>
-                        
-
-
+                        <div className="panel-heading">Leave a Comment:</div>
                         <div className="panel-body">
 
                             <form onSubmit={this.handleSubmit}>
@@ -211,7 +233,11 @@ class Post extends Component {
                     <p>Comments: {commentsSorted.length}</p>
                     {commentsSorted.map((comment, index) => (
 
-                        <Comment key={index} indexRemove={index} comment={comment} handlerRemoveComment={this.handlerRemoveComment} />
+                        <Comment key={index} 
+                                 indexRemove={index} 
+                                 comment={comment} 
+                                 handlerRemoveComment={this.handlerRemoveComment}
+                                 openModalEditComment={this.openModalEditComment} />
 
 
                     ))}
@@ -240,7 +266,7 @@ class Post extends Component {
                             <label htmlFor="title-post">Title: </label>
                             <input type="text" value={this.state.titlePost} className="form-control" id="title-post" onChange={this.handleTitlePostChange} />
                         </div>
-                                                
+
                         <div className="form-group">
                             <label htmlFor="body-post">Body: </label>
                             <textarea value={this.state.bodyPost} className="form-control" id="body-post" rows="3" onChange={this.handleBodyPostChange}></textarea>
@@ -251,6 +277,10 @@ class Post extends Component {
                         </div>
                     </form>
                 </Modal>
+                <ModalEditComment isOpen={this.state.modalIsOpenComment} 
+                                  updateComment={this.updateComment} 
+                                  closeModalEditComment={this.closeModalEditComment}
+                                  comment={this.state.commentEditing}/>
 
             </div>
 
