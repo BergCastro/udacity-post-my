@@ -7,6 +7,8 @@ import VoteScore from './VoteScore'
 import sortBy from 'sort-by'
 import Modal from 'react-modal';
 import ModalEditComment from './ModalEditComment'
+import AlertContainer from 'react-alert'
+
 
 const customStyles = {
     content: {
@@ -27,6 +29,7 @@ const customStyles = {
 
 class Post extends Component {
 
+
     state = {
 
         post: {},
@@ -37,7 +40,9 @@ class Post extends Component {
         titlePost: '',
         bodyPost: '',
         modalIsOpenComment: false,
-        commentEditing: {}
+        commentEditing: {},
+        countBody: 100,
+        alertSucess: false
     }
 
 
@@ -46,6 +51,13 @@ class Post extends Component {
         'redux',
         'udacity'
     ]
+    alertOptions = {
+        offset: 14,
+        position: 'top right',
+        theme: 'light',
+        time: 2000,
+        transition: 'scale'
+    }
 
     componentDidMount() {
         const { id } = this.props
@@ -65,31 +77,48 @@ class Post extends Component {
         })
     }
 
+    showAlert = (text, type) => {
+        this.msg.show(text, {
+            time: 2000,
+            type: type,
+
+        })
+    }
+
     handleSubmit = (event) => {
         event.preventDefault()
         const parentId = this.state.post.id
         const body = this.state.body
         const author = this.state.author
-
-        const id = Math.floor((Math.random() * 100000) + 1) + "";
-        const newComment = {
-            id: id,
-            body: body,
-            author: author,
-            voteScore: 1,
-            deleted: false
+        if(author === ''){
+            this.showAlert("Author can't is empity", 'info')
         }
-
-
-        PostsAPI.addComment(id, parentId, body, author)
-        this.setState({
-            commentsLocal: [...this.state.commentsLocal,
-                newComment
-            ],
-            author: '',
-            body: ''
-
-        })
+        if(body === ''){
+            this.showAlert("Body can't is empity", 'info')
+        }
+        if(author !== '' && body !== ''){
+            const id = Math.floor((Math.random() * 100000) + 1) + "";
+            const newComment = {
+                id: id,
+                body: body,
+                author: author,
+                voteScore: 1,
+                deleted: false
+            }
+    
+    
+            PostsAPI.addComment(id, parentId, body, author)
+            this.showAlert('Comment add', 'success')
+            this.setState({
+                commentsLocal: [...this.state.commentsLocal,
+                    newComment
+                ],
+                author: '',
+                body: ''
+    
+            })
+        }
+        
 
     }
 
@@ -98,7 +127,16 @@ class Post extends Component {
     }
 
     handleBodyChange = (event) => {
-        this.setState({ body: event.target.value });
+        const value = event.target.value
+        const size = value.length
+        if (size <= 100) {
+            this.setState({
+                body: value,
+                countBody: 100 - size
+            });
+        } else {
+            this.showAlert('only 100 caracters', 'info')
+        }
     }
 
     handlerRemoveComment = (event) => {
@@ -106,6 +144,7 @@ class Post extends Component {
         const id = event.target.id
 
         PostsAPI.removeComment(id)
+        this.showAlert('Comment removed', 'success')
         this.setState({
             commentsLocal: this.state.commentsLocal.filter(comment => comment.id !== id)
 
@@ -123,15 +162,15 @@ class Post extends Component {
     openModalEditComment = (event) => {
         event.preventDefault()
         const id = event.target.id
-        
-        console.log("id openModal: "+id)
-        PostsAPI.getCommentById(id).then((comment) =>{
-            this.setState({ 
+
+        console.log("id openModal: " + id)
+        PostsAPI.getCommentById(id).then((comment) => {
+            this.setState({
                 modalIsOpenComment: true,
                 commentEditing: comment
-             })
+            })
         })
-        
+
     }
 
     afterOpenModal = () => {
@@ -143,8 +182,9 @@ class Post extends Component {
     }
 
     closeModalEditComment = () => {
-        this.setState({ 
-            modalIsOpenComment: false });
+        this.setState({
+            modalIsOpenComment: false
+        });
     }
 
     updatePost = (event) => {
@@ -153,6 +193,7 @@ class Post extends Component {
         const body = this.state.bodyPost
         const id = this.state.post.id
         PostsAPI.updatePost(id, title, body)
+        this.showAlert('Post edited', 'success')
         PostsAPI.getPostById(id).then((post) => {
             this.closeModal()
             this.setState({ post })
@@ -165,7 +206,8 @@ class Post extends Component {
         event.preventDefault()
         const idPost = this.state.post.id
         PostsAPI.updateComment(id, body)
-        PostsAPI.getCommentsByPost(idPost).then((comments) =>  {
+        this.showAlert('Comment edited', 'success')
+        PostsAPI.getCommentsByPost(idPost).then((comments) => {
             this.closeModalEditComment()
             this.setState({ commentsLocal: comments })
 
@@ -190,6 +232,7 @@ class Post extends Component {
         return (
             <div>
                 <NavBarMy />
+                <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-11">
@@ -211,7 +254,7 @@ class Post extends Component {
                     <p className="lead">{body}</p>
                     <hr />
                     <div className="panel panel-default">
-                        <div className="panel-heading">Leave a Comment:</div>
+                        <div className="panel-heading">Leave a Comment:          </div>
                         <div className="panel-body">
 
                             <form onSubmit={this.handleSubmit}>
@@ -220,7 +263,7 @@ class Post extends Component {
                                     <input type="text" value={this.state.author} className=" form-control" id="author-post" onChange={this.handleAuthorChange} />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="author-post">Body: </label>
+                                    <label htmlFor="author-post">Body: </label> Characters remaining {this.state.countBody}
                                     <textarea className="form-control" value={this.state.body} rows="3" onChange={this.handleBodyChange}></textarea>
                                 </div>
                                 <button type="submit" className="btn btn-primary">Submit</button>
@@ -233,11 +276,11 @@ class Post extends Component {
                     <p>Comments: {commentsSorted.length}</p>
                     {commentsSorted.map((comment, index) => (
 
-                        <Comment key={index} 
-                                 indexRemove={index} 
-                                 comment={comment} 
-                                 handlerRemoveComment={this.handlerRemoveComment}
-                                 openModalEditComment={this.openModalEditComment} />
+                        <Comment key={index}
+                            indexRemove={index}
+                            comment={comment}
+                            handlerRemoveComment={this.handlerRemoveComment}
+                            openModalEditComment={this.openModalEditComment} />
 
 
                     ))}
@@ -277,10 +320,10 @@ class Post extends Component {
                         </div>
                     </form>
                 </Modal>
-                <ModalEditComment isOpen={this.state.modalIsOpenComment} 
-                                  updateComment={this.updateComment} 
-                                  closeModalEditComment={this.closeModalEditComment}
-                                  comment={this.state.commentEditing}/>
+                <ModalEditComment isOpen={this.state.modalIsOpenComment}
+                    updateComment={this.updateComment}
+                    closeModalEditComment={this.closeModalEditComment}
+                    comment={this.state.commentEditing} />
 
             </div>
 
