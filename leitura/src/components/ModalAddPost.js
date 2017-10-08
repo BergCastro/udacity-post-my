@@ -7,7 +7,7 @@ const customStyles = {
         top: '10%',
         left: '20%',
         right: '20%',
-        bottom: '10%',
+        bottom: '15%',
         border: '1px solid #ccc',
         background: '#fff',
         overflow: 'auto',

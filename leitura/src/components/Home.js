@@ -72,7 +72,7 @@ class Home extends Component {
         console.log("Entrou no handle Home")
         const { title, body, author, category } = post
         PostsAPI.addPost(title, body, author, category)
-        this.showAlert('Post add', 'success')
+        this.showAlert('Post added', 'success')
         PostsAPI.getAll().then((posts) => {
 
             this.setState({

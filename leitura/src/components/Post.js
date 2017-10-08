@@ -108,13 +108,14 @@ class Post extends Component {
     
     
             PostsAPI.addComment(id, parentId, body, author)
-            this.showAlert('Comment add', 'success')
+            this.showAlert('Comment added', 'success')
             this.setState({
                 commentsLocal: [...this.state.commentsLocal,
                     newComment
                 ],
                 author: '',
-                body: ''
+                body: '',
+                countBody: 100
     
             })
         }
