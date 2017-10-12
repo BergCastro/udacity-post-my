@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Timestamp from 'react-timestamp'
 import { Link } from 'react-router-dom'
 import sortBy from 'sort-by'
+import { removePost } from '../actions/post'
+import { connect } from 'react-redux'
 
 
 
@@ -27,10 +29,17 @@ class ListPosts extends Component {
 
 
     }
+    handleRemovePost = (event) => {
+        event.preventDefault();
+        const { removePost, showAlert } = this.props
+        const id = event.target.id
+        removePost(id)
+        showAlert('Post Removed', 'success')
+    }
 
     render() {
         
-       const { posts, handlerRemovePost} = this.props
+       const { posts } = this.props
        const { ordenar } = this.state
        
         const postsFiltered = posts.filter((post) => post.deleted === false)
@@ -72,7 +81,7 @@ class ListPosts extends Component {
                                 <div className="col-lg-1">
 
                                     <div className="remove-btn" >
-                                        <a href=""  id={`${post.id}`} onClick={handlerRemovePost}>delete</a>
+                                        <a href=""  id={`${post.id}`} onClick={this.handleRemovePost}>delete</a>
                                     </div>
                                 </div>
 
@@ -95,4 +104,9 @@ class ListPosts extends Component {
 
 
 
-export default ListPosts
+const mapDispatchToProps = dispatch => ({
+    removePost: (id) => dispatch(removePost(id)),
+    
+  });
+
+export default connect(null, mapDispatchToProps)(ListPosts)

@@ -8,6 +8,9 @@ import sortBy from 'sort-by'
 import Modal from 'react-modal';
 import ModalEditComment from './ModalEditComment'
 import AlertContainer from 'react-alert'
+import { connect } from 'react-redux'
+import { addComment, removeComment, updateComment } from '../actions/comment';
+import { fetchComments } from '../actions/post';
 
 
 const customStyles = {
@@ -32,8 +35,8 @@ class Post extends Component {
 
     state = {
 
-        post: {},
-        commentsLocal: [],
+      
+       // commentsLocal: [...this.props.comments],
         body: '',
         author: '',
         modalIsOpen: false,
@@ -51,68 +54,36 @@ class Post extends Component {
         'redux',
         'udacity'
     ]
-    alertOptions = {
-        offset: 14,
-        position: 'top right',
-        theme: 'light',
-        time: 2000,
-        transition: 'scale'
-    }
+    
 
-    componentDidMount() {
+    componentWillMount() {
         const { id } = this.props
         console.log("valor id: " + id)
-        PostsAPI.getPostById(id).then((post) => {
-            PostsAPI.getCommentsByPost(id).then((comments) => {
-                this.setState({
-                    post,
-                    commentsLocal: comments,
-                    titlePost: post.title,
-                    bodyPost: post.body
+        this.props.fetchComments(id)
 
-                })
-            })
-
-
-        })
     }
 
-    showAlert = (text, type) => {
-        this.msg.show(text, {
-            time: 2000,
-            type: type,
-
-        })
-    }
+    
 
     handleSubmit = (event) => {
         event.preventDefault()
-        const parentId = this.state.post.id
+        const parentId = this.props.post.id
         const body = this.state.body
         const author = this.state.author
         if(author === ''){
-            this.showAlert("Author can't is empity", 'info')
+            this.props.showAlert("Author can't is empity", 'info')
         }
         if(body === ''){
-            this.showAlert("Body can't is empity", 'info')
+            this.props.showAlert("Body can't is empity", 'info')
         }
         if(author !== '' && body !== ''){
-            const id = Math.floor((Math.random() * 100000) + 1) + "";
-            const newComment = {
-                id: id,
-                body: body,
-                author: author,
-                voteScore: 1,
-                deleted: false
-            }
-    
-    
-            PostsAPI.addComment(id, parentId, body, author)
-            this.showAlert('Comment added', 'success')
+         
+            
+            this.props.addComment(parentId, body, author)
+            this.props.showAlert('Comment added', 'success')
+            //this.props.fetchComments(parentId)
             this.setState({
-                commentsLocal: [...this.state.commentsLocal,
-                    newComment
-                ],
+                
                 author: '',
                 body: '',
                 countBody: 100
@@ -136,7 +107,7 @@ class Post extends Component {
                 countBody: 100 - size
             });
         } else {
-            this.showAlert('only 100 caracters', 'info')
+            this.props.showAlert('only 100 caracters', 'info')
         }
     }
 
@@ -144,12 +115,9 @@ class Post extends Component {
         event.preventDefault()
         const id = event.target.id
 
-        PostsAPI.removeComment(id)
-        this.showAlert('Comment removed', 'success')
-        this.setState({
-            commentsLocal: this.state.commentsLocal.filter(comment => comment.id !== id)
-
-        })
+        this.props.removeComment(id)
+        this.props.showAlert('Comment removed', 'success')
+       // this.props.fetchComments(this.props.post.id)
 
     }
 
@@ -174,9 +142,7 @@ class Post extends Component {
 
     }
 
-    afterOpenModal = () => {
-
-    }
+   
 
     closeModal = () => {
         this.setState({ modalIsOpen: false });
@@ -194,7 +160,7 @@ class Post extends Component {
         const body = this.state.bodyPost
         const id = this.state.post.id
         PostsAPI.updatePost(id, title, body)
-        this.showAlert('Post edited', 'success')
+        this.props.showAlert('Post edited', 'success')
         PostsAPI.getPostById(id).then((post) => {
             this.closeModal()
             this.setState({ post })
@@ -205,14 +171,15 @@ class Post extends Component {
 
     updateComment = (event, id, body) => {
         event.preventDefault()
-        const idPost = this.state.post.id
-        PostsAPI.updateComment(id, body)
-        this.showAlert('Comment edited', 'success')
-        PostsAPI.getCommentsByPost(idPost).then((comments) => {
-            this.closeModalEditComment()
-            this.setState({ commentsLocal: comments })
-
-        })
+        const idPost = this.props.post.id
+        //PostsAPI.updateComment(id, body)
+        this.props.updateComment(id, body)
+        this.props.showAlert('Comment edited', 'success')
+        //PostsAPI.getCommentsByPost(idPost).then((comments) => {
+        this.closeModalEditComment()
+        //this.setState({ commentsLocal: comments })
+        
+        //})
 
     }
 
@@ -225,9 +192,14 @@ class Post extends Component {
     }
 
     render() {
-        const { title, author, timestamp, body } = this.state.post
-        const { commentsLocal } = this.state
-        const commentsSorted = commentsLocal.sort(sortBy('-voteScore'))
+        const { title, author, timestamp, body } = this.props.post
+        const { comments } = this.props
+        
+        const commentsSorted = comments.filter((comment) => comment.deleted === false).sort(sortBy('-voteScore'))
+        
+        //console.log("comments:" +JSON.stringify(comments))
+        //console.log("commentsSorted:" +JSON.stringify(commentsSorted))
+       
 
 
         return (
@@ -250,7 +222,7 @@ class Post extends Component {
                     </p>
 
                     <p>Posted on <Timestamp time={(timestamp) / 1000} /> </p>
-                    <VoteScore entity={this.state.post} tipo={'post'} />
+                    <VoteScore entity={this.props.post} tipo={'post'} />
                     <hr />
                     <p className="lead">{body}</p>
                     <hr />
@@ -333,5 +305,17 @@ class Post extends Component {
 
     }
 }
+const mapStateToProps = state => ({
+    post: state.postCurrent,
+    comments: state.commentsPost
 
-export default Post
+});
+
+const mapDispatchToProps = dispatch => ({
+    fetchComments: (id) => dispatch(fetchComments(id)),
+    addComment: (parentId, body, author) => dispatch(addComment(parentId, body, author)),
+    removeComment: (id) => dispatch(removeComment(id)),
+    updateComment: (id, body) => dispatch(updateComment(id, body))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post)

@@ -1,59 +1,32 @@
 import React, { Component } from 'react'
 import * as PostsAPI from '../PostsAPI'
+import { connect } from 'react-redux'
+import { incrementVoteComment, decrementVoteComment } from '../actions/comment'
+import { incrementVotePost, decrementVotePost } from '../actions/post'
 
 class VoteScore extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            votes: 0,
-            getProp: true
+    
+    
 
-
-        }
-
-
-    }
-    componentDidMount(){
-        const voteScore = this.props.entity.voteScore
-        this.setState({
-            votes: voteScore
-        })
-    }
-
-    changeVote = (event) => {
+    incrementVote = (event) => {
         event.preventDefault()
-        const id = event.target.id
-        const action = event.target.name
-        const { tipo } = this.props
-        if (tipo === 'post') {
-            PostsAPI.voteUp(id, action)
-            if (action === 'upVote') {
-                this.setState((prevtState) => ({
-                    votes: prevtState.votes + 1,
-                    getProp: false
-                }))
-            } else {
-                this.setState((prevtState) => ({
-                    votes: prevtState.votes - 1,
-                    getProp: false
-                }))
-            }
-        }else if(tipo === 'comment'){
-            PostsAPI.voteComment(id, action)
-            if (action === 'upVote') {
-                this.setState((prevtState) => ({
-                    votes: prevtState.votes + 1,
-                    getProp: false
-                }))
-            } else {
-                this.setState((prevtState) => ({
-                    votes: prevtState.votes - 1,
-                    getProp: false
-                }))
-            }
+        const { entity, tipo } = this.props
+        if(tipo === 'comment'){
+            this.props.incrementVoteComment(entity.id)
+        }else if(tipo === 'post'){
+            this.props.incrementVotePost(entity.id)
         }
 
+    }
 
+    decrementVote = (event) => {
+        event.preventDefault()
+        const { entity, tipo } = this.props
+        if(tipo === 'comment'){
+            this.props.decrementVoteComment(entity.id)
+        }else if(tipo === 'post'){
+            this.props.decrementVotePost(entity.id)
+        }
 
     }
 
@@ -61,18 +34,20 @@ class VoteScore extends Component {
     render() {
         const { entity } = this.props
 
-        let entityId = entity.id
-        if (this.state.getProp) {
-
-            this.state.votes = entity.voteScore
-
-        }
-
         return (
-            <h4> Votes: {this.state.votes} <a href="" id={entityId} name={'upVote'} onClick={this.changeVote}>+</a>  <a href="" id={entityId} name={'downVote'} onClick={this.changeVote} >-</a></h4>
+            <h4> Votes: {entity.voteScore} <a href=""  onClick={this.incrementVote}>+</a>  <a href=""   onClick={this.decrementVote} >-</a></h4>
         )
 
     }
 }
 
-export default VoteScore
+const mapDispatchToProps = dispatch => ({
+    
+    incrementVoteComment: (id) => dispatch(incrementVoteComment(id)),
+    decrementVoteComment: (id) => dispatch(decrementVoteComment(id)),
+    incrementVotePost: (id) => dispatch(incrementVotePost(id)),
+    decrementVotePost: (id) => dispatch(decrementVotePost(id))
+
+});
+
+export default connect(null, mapDispatchToProps)(VoteScore)

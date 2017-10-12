@@ -67,8 +67,8 @@ export const search = (query, maxResults) =>
         .then(data => data.books)
 
 
-export const addPost = (title, body, author, category) => {
-    const id = Math.floor((Math.random() * 100000) + 1) + "";
+export const addPost = (id, title, body, author, category) => {
+    
     const timestamp = Date.now()
     fetch(`${api}/posts`, {
         method: 'POST',
@@ -94,7 +94,7 @@ export const removePost = (id) => {
         body: JSON.stringify({ id })
     }).then().then(data => data)
 }
-export const voteUp = (id, option) => {
+export const votePost = (id, option) => {
 
     fetch(`${api}/posts/${id}`, {
         method: 'POST',

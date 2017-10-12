@@ -19,7 +19,7 @@ const customStyles = {
 };
 
 class ModalAddPost extends Component {
-   
+
     state = {
         title: '',
         author: '',
@@ -34,7 +34,7 @@ class ModalAddPost extends Component {
         'udacity'
     ]
 
-    
+
 
     afterOpenModal = () => {
         this.title.focus()
@@ -46,7 +46,7 @@ class ModalAddPost extends Component {
     handleAuthorChange = (event) => {
         this.setState({ author: event.target.value });
     }
-    
+
     handleCategoryChange = (event) => {
         this.setState({ category: event.target.value });
     }
@@ -61,28 +61,26 @@ class ModalAddPost extends Component {
             author: '',
             category: '',
             body: ''
-        })    
+        })
     }
 
     submitPost = (event) => {
         event.preventDefault()
-        const { handleSubmit } = this.props
-        const newPost = {
-            title: this.state.title,
-            author: this.state.author,
-            category: this.state.category,
-            body: this.state.body
-        }
+        const { addPost, closeModal, showAlert } = this.props
+        const { title, author, category, body } = this.state
+
         this.cleanInputs(event)
-        
-        handleSubmit(event, newPost)
+
+        addPost(title, author, category, body)
+        showAlert('Post added', 'success')
+        closeModal()
 
     }
 
-    
+
 
     render() {
-        const { isOpen , closeModal, handleSubmit } = this.props
+        const { isOpen, closeModal, handleSubmit } = this.props
         return (
             <Modal
                 isOpen={isOpen}
@@ -124,7 +122,7 @@ class ModalAddPost extends Component {
                     <div className="btn-toolbar">
                         <button type="submit" className="btn btn-primary">Save</button>
                         <button className="btn btn-primary" onClick={closeModal}>Cancel</button>
-                        <button  className="btn btn-primary" onClick={this.cleanInputs}>Reset</button>
+                        <button className="btn btn-primary" onClick={this.cleanInputs}>Reset</button>
                     </div>
                 </form>
             </Modal>

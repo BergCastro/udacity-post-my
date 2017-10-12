@@ -2,72 +2,53 @@ import React, { Component } from 'react'
 import NavBarMy from './NavBar';
 import ListPosts from './ListPosts';
 import * as PostsAPI from '../PostsAPI'
+import { connect } from 'react-redux'
+import { fetchPosts } from '../actions/post';
+
 
 
 
 class ByCategory extends Component {
 
     state = {
-        category: '',
-        posts: []
-
+        category: 'all',
     }
-    categories = [
-        'all',
-        'react',
-        'redux',
-        'udacity'
-    ]
 
-    componentDidMount() {
-
-        PostsAPI.getAll().then((posts) => {
-
-            this.setState({ posts })
-
-        })
+    componentWillMount() {
+        this.props.fetchPosts()
     }
+
+    
+
     handleCategoryChange = (event) => {
         event.preventDefault()
         const category = event.target.value
-        if (category === 'all') {
-            PostsAPI.getAll().then((posts) => {
 
-                this.setState({ posts, category })
+        this.setState({ category })
 
-            })
-        } else {
-            PostsAPI.getPostsByCategory(category).then((posts) => {
-
-                this.setState({ posts, category })
-
-            })
-        }
     }
 
-    handlerRemovePost = (event) => {
-        event.preventDefault()
-        const id = event.target.id
-        PostsAPI.removePost(id)
-        PostsAPI.getAll().then((posts) => {
-            
-            this.setState({ posts })
-
-        })
-      
-        
-    }
     
+
     render() {
+        const { posts, alertOptions, categories, showAlert } = this.props
+        const { category } = this.state
+        let postsByCategory = []
+        if (category !== 'all') {
+            postsByCategory = posts.filter((post) => post.category === this.state.category)
+        } else {
+            postsByCategory = posts
+        }
         return (
             <div>
                 <NavBarMy />
+                
                 <div className='container'>
                     <div className='row'>
                         <div className="form-group">
                             <label htmlFor="categories-post">Category: </label>
                             <select value={this.state.category} className="form-control" onChange={this.handleCategoryChange}>
-                                {this.categories.map((category) => (
+                                {categories.map((category) => (
                                     <option key={category}>{category}</option>
                                 )
                                 )}
@@ -76,11 +57,24 @@ class ByCategory extends Component {
                         </div>
                     </div>
                 </div>
-                <ListPosts posts={this.state.posts} handlerRemovePost={this.handlerRemovePost} />
-               
+                <ListPosts posts={postsByCategory} showAlert={showAlert} />
+
             </div>
         )
     }
 }
 
-export default ByCategory
+const mapStateToProps = state => ({
+    posts: state.posts,
+    categories: state.categories
+    
+});
+
+
+
+//const mapDispatchToProps = dispatch => bindActionCreators({getPosts, fetchPosts}, dispatch)
+const mapDispatchToProps = dispatch => ({
+    fetchPosts: () => dispatch(fetchPosts())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ByCategory)

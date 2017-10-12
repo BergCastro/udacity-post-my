@@ -5,20 +5,18 @@ import * as PostsAPI from '../PostsAPI'
 import { Link } from 'react-router-dom'
 import ModalAddPost from './ModalAddPost'
 import AlertContainer from 'react-alert'
+import { connect } from 'react-redux'
+import { fetchPosts, addPost } from '../actions/post';
+
 
 
 
 class Home extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            posts: [],
-            modalIsOpen: false,
+    
 
-
-        }
-
+    state = {
+        modalIsOpen: false
     }
 
     alertOptions = {
@@ -29,36 +27,13 @@ class Home extends Component {
         transition: 'scale'
     }
 
-    showAlert = (text, type) => {
-        this.msg.show(text, {
-            time: 2000,
-            type: type,
+   
 
-        })
+    componentWillMount() {
+       
+           this.props.fetchPosts()
+       
     }
-
-    handlerRemovePost = (event) => {
-        event.preventDefault()
-        const id = event.target.id
-        PostsAPI.removePost(id)
-        this.showAlert('Post removed', 'success')
-        PostsAPI.getAll().then((posts) => {
-
-            this.setState({ posts })
-
-        })
-
-
-    }
-
-    componentDidMount() {
-        PostsAPI.getAll().then((posts) => {
-
-            this.setState({ posts })
-
-        })
-    }
-
     openModal = (event) => {
         event.preventDefault()
         this.setState({ modalIsOpen: true });
@@ -68,28 +43,12 @@ class Home extends Component {
         this.setState({ modalIsOpen: false });
     }
 
-    handleSubmit = (event, post) => {
-        console.log("Entrou no handle Home")
-        const { title, body, author, category } = post
-        PostsAPI.addPost(title, body, author, category)
-        this.showAlert('Post added', 'success')
-        PostsAPI.getAll().then((posts) => {
-
-            this.setState({
-                posts,
-                modalIsOpen: false
-            })
-
-        })
-
-    }
-
 
 
     render() {
-
+       const { posts, showAlert } = this.props
+        
         return (
-
             <div>
 
                 <NavBarMy />
@@ -97,8 +56,12 @@ class Home extends Component {
                 <div className="add-post">
                     <a href='' onClick={this.openModal}>Add Post</a>
                 </div>
-                <ListPosts posts={this.state.posts} handlerRemovePost={this.handlerRemovePost} />
-                <ModalAddPost isOpen={this.state.modalIsOpen} closeModal={this.closeModal} handleSubmit={this.handleSubmit} />
+
+                {posts.length >= 1 ?
+                    <ListPosts posts={posts} showAlert={showAlert} />
+                    : <h4>Sem posts</h4>}
+                <ModalAddPost isOpen={this.state.modalIsOpen} closeModal={this.closeModal} addPost={this.props.addPost} showAlert={showAlert} />
+
             </div>
 
         )
@@ -106,4 +69,15 @@ class Home extends Component {
 
 }
 
-export default Home
+const mapStateToProps = state => ({
+    posts: state.posts
+
+});
+
+
+const mapDispatchToProps = dispatch => ({
+    fetchPosts: () => dispatch(fetchPosts()),
+    addPost: (title, author, category, body) => dispatch(addPost(title, author, category, body))
+  });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home) 
