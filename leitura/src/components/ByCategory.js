@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import NavBarMy from './NavBar';
 import ListPosts from './ListPosts';
-import * as PostsAPI from '../PostsAPI'
 import { connect } from 'react-redux'
 import { fetchPosts } from '../actions/post';
 
@@ -31,7 +30,7 @@ class ByCategory extends Component {
     
 
     render() {
-        const { posts, alertOptions, categories, showAlert } = this.props
+        const { posts, categories, showAlert } = this.props
         const { category } = this.state
         let postsByCategory = []
         if (category !== 'all') {

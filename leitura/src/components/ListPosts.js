@@ -57,7 +57,7 @@ class ListPosts extends Component {
                         
                     </div>
                     <div className="col-lg-3">
-                        Ordenar por:
+                        Sort by:
                            <a href="" id="date" onClick={this.sortByChange}> Date </a>
                         --
                            <a href="" id="vote" onClick={this.sortByChange}> Votes</a>

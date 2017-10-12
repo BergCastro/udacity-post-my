@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import AlertContainer from 'react-alert'
+
 
 
 class NavBarMy extends Component {

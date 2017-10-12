@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import './css/blog-post.css';
 import Home from './components/Home'
-import AddPost from './components/AddPost'
 import ByCategory from './components/ByCategory'
 import Post from './components/Post'
 import AlertContainer from 'react-alert'
-import { connect } from 'react-redux'
+
 
 import { Route } from 'react-router-dom'
 

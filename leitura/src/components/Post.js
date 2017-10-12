@@ -10,7 +10,7 @@ import ModalEditComment from './ModalEditComment'
 import AlertContainer from 'react-alert'
 import { connect } from 'react-redux'
 import { addComment, removeComment, updateComment } from '../actions/comment';
-import { fetchComments } from '../actions/post';
+import { fetchComments, updatePost } from '../actions/post';
 
 
 const customStyles = {
@@ -35,8 +35,6 @@ class Post extends Component {
 
     state = {
 
-      
-       // commentsLocal: [...this.props.comments],
         body: '',
         author: '',
         modalIsOpen: false,
@@ -58,7 +56,6 @@ class Post extends Component {
 
     componentWillMount() {
         const { id } = this.props
-        console.log("valor id: " + id)
         this.props.fetchComments(id)
 
     }
@@ -128,11 +125,17 @@ class Post extends Component {
         this.setState({ modalIsOpen: true });
     }
 
+    afterOpenModal = () => {
+        const { post } = this.props
+        this.setState({
+            titlePost: post.title,
+            bodyPost: post.body
+        })
+    }
+
     openModalEditComment = (event) => {
         event.preventDefault()
         const id = event.target.id
-
-        console.log("id openModal: " + id)
         PostsAPI.getCommentById(id).then((comment) => {
             this.setState({
                 modalIsOpenComment: true,
@@ -156,31 +159,22 @@ class Post extends Component {
 
     updatePost = (event) => {
         event.preventDefault()
-        const title = this.state.titlePost
-        const body = this.state.bodyPost
-        const id = this.state.post.id
-        PostsAPI.updatePost(id, title, body)
+        const { titlePost, bodyPost } = this.state
+        const title = titlePost
+        const body = bodyPost
+        const id = this.props.post.id
+        this.closeModal()
+        this.props.updatePost(id, title, body)
         this.props.showAlert('Post edited', 'success')
-        PostsAPI.getPostById(id).then((post) => {
-            this.closeModal()
-            this.setState({ post })
-
-        })
-
+      
     }
 
     updateComment = (event, id, body) => {
         event.preventDefault()
-        const idPost = this.props.post.id
-        //PostsAPI.updateComment(id, body)
         this.props.updateComment(id, body)
         this.props.showAlert('Comment edited', 'success')
-        //PostsAPI.getCommentsByPost(idPost).then((comments) => {
         this.closeModalEditComment()
-        //this.setState({ commentsLocal: comments })
         
-        //})
-
     }
 
     handleTitlePostChange = (event) => {
@@ -194,14 +188,8 @@ class Post extends Component {
     render() {
         const { title, author, timestamp, body } = this.props.post
         const { comments } = this.props
-        
         const commentsSorted = comments.filter((comment) => comment.deleted === false).sort(sortBy('-voteScore'))
         
-        //console.log("comments:" +JSON.stringify(comments))
-        //console.log("commentsSorted:" +JSON.stringify(commentsSorted))
-       
-
-
         return (
             <div>
                 <NavBarMy />
@@ -315,7 +303,8 @@ const mapDispatchToProps = dispatch => ({
     fetchComments: (id) => dispatch(fetchComments(id)),
     addComment: (parentId, body, author) => dispatch(addComment(parentId, body, author)),
     removeComment: (id) => dispatch(removeComment(id)),
-    updateComment: (id, body) => dispatch(updateComment(id, body))
+    updateComment: (id, body) => dispatch(updateComment(id, body)),
+    updatePost: (id, title, body) => dispatch(updatePost(id, title, body))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)

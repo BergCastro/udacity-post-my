@@ -2,10 +2,9 @@ import {
     ADD_POST,
     INCREMENT_VOTE_POST,
     DECREMENT_VOTE_POST,
-    EDIT_POST,
+    UPDATE_POST,
     REMOVE_POST,
     GET_POSTS,
-    SHOW_ALERT,
     GET_POST_COMMENTS
 
 } from '../actions/post'
@@ -40,33 +39,43 @@ const INITIAL_STATE = {
 
 function post(state = INITIAL_STATE, action) {
     const { type, payload } = action
-    console.log("payload: " + payload)
     switch (type) {
         case ADD_POST:
-        return {
-            ...state,
-            posts: [
-                ...state.posts,
-                { ...payload }
-            ]
+            return {
+                ...state,
+                posts: [
+                    ...state.posts,
+                    { ...payload }
+                ]
 
-        }
-        case REMOVE_POST:
-        return {
-            ...state,
-            posts:
-            state.posts.map((post) => {
-                if (payload === post.id) {
-                    return {
-                        ...post,
-                        deleted: true
-                    }
+            }
+        case UPDATE_POST:
+            return {
+                ...state,
+                postCurrent: {
+                    ...state.postCurrent,
+                    title: payload.title,
+                    body: payload.body
+
                 }
-                return post
 
-            })
+            }
+        case REMOVE_POST:
+            return {
+                ...state,
+                posts:
+                state.posts.map((post) => {
+                    if (payload === post.id) {
+                        return {
+                            ...post,
+                            deleted: true
+                        }
+                    }
+                    return post
 
-        }
+                })
+
+            }
 
         case INCREMENT_VOTE_POST:
             return {

@@ -80,7 +80,7 @@ class ModalAddPost extends Component {
 
 
     render() {
-        const { isOpen, closeModal, handleSubmit } = this.props
+        const { isOpen, closeModal } = this.props
         return (
             <Modal
                 isOpen={isOpen}

@@ -32,7 +32,6 @@ class ModalEditComment extends Component {
 
     afterOpenModal = () => {
         const { comment } = this.props
-        console.log("aftermodal: "+comment)
         this.setState({
             id: comment.id,
             body: comment.body
@@ -65,7 +64,7 @@ class ModalEditComment extends Component {
     
 
     render() {
-        const { isOpen , closeModalEditComment, updateComment } = this.props
+        const { isOpen , closeModalEditComment } = this.props
         return (
             <Modal
                 isOpen={isOpen}

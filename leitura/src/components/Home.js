@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import NavBarMy from './NavBar';
 import ListPosts from './ListPosts';
-import * as PostsAPI from '../PostsAPI'
-import { Link } from 'react-router-dom'
 import ModalAddPost from './ModalAddPost'
 import AlertContainer from 'react-alert'
 import { connect } from 'react-redux'

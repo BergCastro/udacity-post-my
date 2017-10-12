@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import * as PostsAPI from '../PostsAPI'
 import { connect } from 'react-redux'
 import { incrementVoteComment, decrementVoteComment } from '../actions/comment'
 import { incrementVotePost, decrementVotePost } from '../actions/post'
@@ -35,7 +34,7 @@ class VoteScore extends Component {
         const { entity } = this.props
 
         return (
-            <h4> Votes: {entity.voteScore} <a href=""  onClick={this.incrementVote}>+</a>  <a href=""   onClick={this.decrementVote} >-</a></h4>
+            <h4> Votes:  <a href=""  onClick={this.incrementVote}><span className="glyphicon glyphicon-thumbs-up"></span></a> {entity.voteScore} <a href=""   onClick={this.decrementVote} ><span className="glyphicon glyphicon-thumbs-down"></span></a></h4>
         )
 
     }
