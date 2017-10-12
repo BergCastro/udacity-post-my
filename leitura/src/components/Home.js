@@ -54,10 +54,9 @@ class Home extends Component {
                 <div className="add-post">
                     <a href='' onClick={this.openModal}>Add Post</a>
                 </div>
-
-                {posts.length >= 1 ?
+               
                     <ListPosts posts={posts} showAlert={showAlert} />
-                    : <h4>Sem posts</h4>}
+                    
                 <ModalAddPost isOpen={this.state.modalIsOpen} closeModal={this.closeModal} addPost={this.props.addPost} showAlert={showAlert} />
 
             </div>

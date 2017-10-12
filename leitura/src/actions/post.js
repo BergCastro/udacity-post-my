@@ -1,6 +1,7 @@
 import * as PostsAPI from '../PostsAPI'
 
 
+
 export const ADD_POST = 'ADD_POST'
 export const REMOVE_POST = 'REMOVE_POST'
 export const INCREMENT_VOTE_POST = 'INCREMENT_VOTE_POST'
@@ -68,16 +69,19 @@ export function updatePost(id, title, body) {
         }
 }
 
-export function removePost(id) {
+export function removePost(id, redirect) {
 
         PostsAPI.removePost(id)
-
-
+        if(redirect){
+         window.location="/"
+        }else{
         return {
                 type: REMOVE_POST,
                 payload: id
-
         }
+}
+
+        
 }
 
 export function incrementVotePost(id) {

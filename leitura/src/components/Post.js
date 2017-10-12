@@ -10,7 +10,8 @@ import ModalEditComment from './ModalEditComment'
 import AlertContainer from 'react-alert'
 import { connect } from 'react-redux'
 import { addComment, removeComment, updateComment } from '../actions/comment';
-import { fetchComments, updatePost } from '../actions/post';
+import { fetchComments, updatePost, removePost } from '../actions/post';
+
 
 
 const customStyles = {
@@ -169,6 +170,11 @@ class Post extends Component {
       
     }
 
+    removePost = (event) => {
+        event.preventDefault()
+        this.props.removePost(this.props.post.id, true)
+    }
+
     updateComment = (event, id, body) => {
         event.preventDefault()
         this.props.updateComment(id, body)
@@ -196,11 +202,12 @@ class Post extends Component {
                 <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-11">
+                        <div className="col-lg-10">
                             <h1 className="mt-4">{title}</h1>
                         </div>
-                        <div className="col-lg-1">
-                            <button className="btn btn-primary btn-edit-post" onClick={this.openModal}>Edit</button>
+                        <div className="col-lg-2 btn-toolbar">
+                            <button className="btn btn-edit-post" onClick={this.openModal}><span  className="glyphicon glyphicon-pencil"></span></button>
+                            <button className="btn btn-edit-post" onClick={this.removePost}><span  className="glyphicon glyphicon-trash"></span></button>
                         </div>
 
                     </div>
@@ -304,7 +311,8 @@ const mapDispatchToProps = dispatch => ({
     addComment: (parentId, body, author) => dispatch(addComment(parentId, body, author)),
     removeComment: (id) => dispatch(removeComment(id)),
     updateComment: (id, body) => dispatch(updateComment(id, body)),
-    updatePost: (id, title, body) => dispatch(updatePost(id, title, body))
+    updatePost: (id, title, body) => dispatch(updatePost(id, title, body)),
+    removePost: (id, redirect) => dispatch(removePost(id, redirect)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)

@@ -33,7 +33,7 @@ class ListPosts extends Component {
         event.preventDefault();
         const { removePost, showAlert } = this.props
         const id = event.target.id
-        removePost(id)
+        removePost(id, false)
         showAlert('Post Removed', 'success')
     }
 
@@ -105,7 +105,7 @@ class ListPosts extends Component {
 
 
 const mapDispatchToProps = dispatch => ({
-    removePost: (id) => dispatch(removePost(id)),
+    removePost: (id, redirect) => dispatch(removePost(id, redirect)),
     
   });
 
