@@ -34,7 +34,8 @@ export function getPostComments(post, comments) {
 
 
 export function addPost(title, author, category, body) {
-        const id = Math.floor((Math.random() * 100000) + 1) + "";
+        const timestamp = Date.now()
+        const id = ""+timestamp
         PostsAPI.addPost(id, title, body, author, category)
 
 
@@ -42,7 +43,7 @@ export function addPost(title, author, category, body) {
                 type: ADD_POST,
                 payload: {
                         id: id,
-                        timestamp: Date.now(),
+                        timestamp,
                         title,
                         body: body,
                         author: author,
@@ -111,10 +112,10 @@ export const fetchPosts = () => dispatch => (
 )
 
 export const fetchComments = (id) => dispatch => (
-
+        
         PostsAPI.getPostById(id).then((post) => {
                 PostsAPI.getCommentsByPost(id).then((comments) => {
-
+                        
                         dispatch(getPostComments(post, comments))
                 })
 

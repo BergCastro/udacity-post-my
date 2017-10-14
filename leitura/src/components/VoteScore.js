@@ -34,7 +34,7 @@ class VoteScore extends Component {
         const { entity } = this.props
 
         return (
-            <h4> Votes:  <a href=""  onClick={this.incrementVote}><span className="glyphicon glyphicon-thumbs-up"></span></a> {entity.voteScore} <a href=""   onClick={this.decrementVote} ><span className="glyphicon glyphicon-thumbs-down"></span></a></h4>
+            <h4> Votes:  <button className="btn btn-default" onClick={this.incrementVote}><span className="glyphicon glyphicon-thumbs-up"></span></button> {entity.voteScore} <button className="btn btn-default" onClick={this.decrementVote} > <span className="glyphicon glyphicon-thumbs-down"></span></button></h4>
         )
 
     }

@@ -7,7 +7,8 @@ export const INCREMENT_VOTE_COMMENT = 'INCREMENT_VOTE_COMMENT'
 export const DECREMENT_VOTE_COMMENT = 'DECREMENT_VOTE_COMMENT'
 
 export function addComment(parentId, body, author) {
-    const id = Math.floor((Math.random() * 100000) + 1) + "";
+    const timestamp = Date.now()
+    const id = ""+timestamp
     PostsAPI.addComment(id, parentId, body, author)
 
    
@@ -16,7 +17,7 @@ export function addComment(parentId, body, author) {
             payload: {
                    id: id,
                    parentId: parentId,
-                   timestamp: Date.now(),
+                   timestamp,
                    body: body,
                    author: author,
                    voteScore: 1,

@@ -102,7 +102,7 @@ function post(state = INITIAL_STATE, action) {
         case GET_POST_COMMENTS:
             return {
                 ...state,
-                postCurrent: { ...payload.post },
+                postCurrent: payload.post.id !== undefined ? {...payload.post}: {error: ''}  ,
                 commentsPost: [...payload.comments]
             }
         case GET_POSTS:

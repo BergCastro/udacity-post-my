@@ -9,17 +9,17 @@ import { connect } from 'react-redux'
 
 
 class ListPosts extends Component {
-   
+
     constructor(props) {
         super(props);
         this.state = {
-           ordenar: "vote"
-           
+            ordenar: "vote"
+
 
         };
-       
+
     }
-    
+
     sortByChange = (event) => {
         event.preventDefault();
         const id = event.target.id
@@ -38,23 +38,19 @@ class ListPosts extends Component {
     }
 
     render() {
-        
-       const { posts } = this.props
-       const { ordenar } = this.state
-       
+
+        const { posts } = this.props
+        const { ordenar } = this.state
         const postsFiltered = posts.filter((post) => post.deleted === false)
-        let postsSorted = {}
-        if (ordenar === "vote") {
-            postsSorted = postsFiltered.sort(sortBy('-voteScore'))
-        } else {
-            postsSorted = postsFiltered.sort(sortBy('-timestamp'))
-        }
+        const fieldToSort = ordenar === 'vote' ? '-voteScore' : '-timestamp'
+        let postsSorted = postsFiltered.sort(sortBy(fieldToSort))
+
 
         return (
             <div className="container">
                 <div className="row">
                     <div className="col-lg-9">
-                        
+
                     </div>
                     <div className="col-lg-3">
                         Sort by:
@@ -70,10 +66,10 @@ class ListPosts extends Component {
                         <li key={post.title}>
                             <div className="row">
                                 <div className="col-lg-9">
-                                    <Link to={`/post/${post.id}`}><h3 className="mt-4">{post.title}</h3></Link>
+                                    <Link to={`/${post.category}/${post.id}`}><h3 className="mt-4">{post.title}</h3></Link>
 
                                     <p>Posted on <Timestamp time={(post.timestamp) / 1000} /></p>
-                                    
+
                                 </div>
                                 <div className="col-lg-2">
                                     <h5 className="vote-list">Votes: {post.voteScore}</h5>
@@ -81,7 +77,7 @@ class ListPosts extends Component {
                                 <div className="col-lg-1">
 
                                     <div className="remove-btn" >
-                                        <a href=""  id={`${post.id}`} onClick={this.handleRemovePost}>delete</a>
+                                        <a href="" id={`${post.id}`} onClick={this.handleRemovePost}>delete</a>
                                     </div>
                                 </div>
 
@@ -106,7 +102,7 @@ class ListPosts extends Component {
 
 const mapDispatchToProps = dispatch => ({
     removePost: (id, redirect) => dispatch(removePost(id, redirect)),
-    
-  });
+
+});
 
 export default connect(null, mapDispatchToProps)(ListPosts)

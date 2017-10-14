@@ -46,7 +46,7 @@ body {
     font-size: 0;
     
     
-    margin-top: 36px;
+    margin-top: 28px;
   }
   .remove-btn-comment a {
     display: block;
@@ -60,7 +60,7 @@ body {
     background-size: 28px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     font-size: 0;
-    margin-top: 15px;
+    margin-top: 25px;
    
   }
   ul {
@@ -86,6 +86,10 @@ body {
 }
 
 .btn-edit-comment {
-  margin-top: 22px;
+  margin-top: 30px;
   
 }
+
+.error-template {padding: 40px 15px;text-align: center;}
+.loading {padding: 40px 15px;text-align: center;}
+.error-actions {margin-top:15px;margin-bottom:15px;}

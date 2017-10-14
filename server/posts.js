@@ -3,9 +3,9 @@ const clone = require('clone')
 let db = {}
 
 const defaultData = {
-  "1": {
-    id: '1',
-    timestamp: 1467166872634,
+  "1443657600000": {
+    id: '1443657600000',
+    timestamp: 1443657600000,
     title: 'Udacity is the best place to learn React',
     body: 'Everyone says so after all.',
     author: 'thingtwo',
@@ -13,9 +13,9 @@ const defaultData = {
     voteScore: 6,
     deleted: false 
   },
-  "2": {
-    id: '2',
-    timestamp: 1468479767190,
+  "1446335999000": {
+    id: '1446335999000',
+    timestamp: 1446335999000,
     title: 'Learn Redux in 10 minutes!',
     body: 'Just kidding. It takes more than 10 minutes to learn technology.',
     author: 'thingone',
@@ -23,9 +23,9 @@ const defaultData = {
     voteScore: -5,
     deleted: false
   },
-  "3": {
-    id: '3',
-    timestamp: 1467166872634,
+  "1446336000000": {
+    id: '1446336000000',
+    timestamp: 1446336000000,
     title: 'Udacity Missão',
     body: 'Nossa missão é trazer para o mundo um ensino superior acessível, envolvente e altamente eficaz. ',
     author: 'Lindemberg',
@@ -33,9 +33,9 @@ const defaultData = {
     voteScore: 2,
     deleted: false 
   },
-  "4": {
-    id: '4',
-    timestamp: 1483228800634,
+  "1448927999000": {
+    id: '1448927999000',
+    timestamp: 1448927999000,
     title: 'Udacity história',
     body: 'A Udacity surgiu de uma experiência na Universidade de Stanford. Sebastian Thrun e Peter Norvig ofereceram um curso online gratuito de "Introdução à Inteligência Artificial", aberto ao público. Foram mais de 160 mil inscritos de 190 países, e logo depois nasceu a Udacity. Hoje somos uma equipe cada vez maior de educadores e engenheiros dedicados a mudar o futuro da educação, unindo as competências requisitadas na vida real, uma educação de relevância e empregabilidade.',
     author: 'Lindemberg',
@@ -43,9 +43,9 @@ const defaultData = {
     voteScore: 4,
     deleted: false 
   },
-  "5": {
-    id: '5',
-    timestamp: 	1477958399634,
+  "1448928000000": {
+    id: '1448928000000',
+    timestamp: 	1448928000000,
     title: 'React Component-Based',
     body: 'Build encapsulated components that manage their own state, then compose them to make complex UIs..',
     author: 'Lindemberg',
@@ -54,9 +54,9 @@ const defaultData = {
     deleted: false 
   }
   ,
-  "6": {
-    id: '6',
-    timestamp: 1475280000634,
+  "1454284800000": {
+    id: '1454284800000',
+    timestamp: 1454284800000,
     title: 'Redux Motivation',
     body: 'As the requirements for JavaScript single-page applications have become increasingly complicated, our code must manage more state than ever before. ',
     author: 'Lindemberg',
@@ -65,9 +65,9 @@ const defaultData = {
     deleted: false 
   }
   ,
-  "7": {
-    id: '7',
-    timestamp: 1443657600111,
+  "1456790399000": {
+    id: '1456790399000',
+    timestamp: 1456790399000,
     title: 'Redux Single source of truth',
     body: 'The state of your whole application is stored in an object tree within a single store.',
     author: 'Lindemberg',

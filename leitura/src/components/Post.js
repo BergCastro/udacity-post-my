@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import * as PostsAPI from '../PostsAPI'
 import Timestamp from 'react-timestamp'
 import NavBarMy from './NavBar'
 import Comment from './Comment'
@@ -9,8 +8,9 @@ import Modal from 'react-modal';
 import ModalEditComment from './ModalEditComment'
 import AlertContainer from 'react-alert'
 import { connect } from 'react-redux'
-import { addComment, removeComment, updateComment } from '../actions/comment';
-import { fetchComments, updatePost, removePost } from '../actions/post';
+import { addComment, removeComment, updateComment } from '../actions/comment'
+import { fetchComments, updatePost, removePost } from '../actions/post'
+import NoFound from './NoFound'
 
 
 
@@ -55,7 +55,7 @@ class Post extends Component {
     ]
     
 
-    componentWillMount() {
+    componentDidMount() {
         const { id } = this.props
         this.props.fetchComments(id)
 
@@ -137,13 +137,16 @@ class Post extends Component {
     openModalEditComment = (event) => {
         event.preventDefault()
         const id = event.target.id
-        PostsAPI.getCommentById(id).then((comment) => {
+        const { comments } = this.props
+        console.log("comments: "+JSON.stringify(comments))
+        const commentSelected = comments.filter(comment => comment.id === id)
             this.setState({
-                modalIsOpenComment: true,
-                commentEditing: comment
-            })
-        })
+                commentEditing: commentSelected[0],
+                modalIsOpenComment: true
 
+                
+            })
+        
     }
 
    
@@ -192,12 +195,20 @@ class Post extends Component {
     }
 
     render() {
-        const { title, author, timestamp, body } = this.props.post
-        const { comments } = this.props
-        const commentsSorted = comments.filter((comment) => comment.deleted === false).sort(sortBy('-voteScore'))
         
+        
+        const { comments, post } = this.props
+        const { title, author, timestamp, body } = post
+        const commentsSorted = comments.filter((comment) => comment.deleted === false).sort(sortBy('-voteScore'))
+       
         return (
             <div>
+            { post.id === undefined && post.error === undefined ? <h3 className='loading'>loading...</h3> : (
+            <div>
+          
+            {post.error === undefined?  (
+            <div>
+                
                 <NavBarMy />
                 <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
                 <div className="container">
@@ -211,10 +222,7 @@ class Post extends Component {
                         </div>
 
                     </div>
-                    <p className="lead">
-
-                        {"by " + author}
-                    </p>
+                    <p className="lead">by  {author}</p>
 
                     <p>Posted on <Timestamp time={(timestamp) / 1000} /> </p>
                     <VoteScore entity={this.props.post} tipo={'post'} />
@@ -292,9 +300,12 @@ class Post extends Component {
                     updateComment={this.updateComment}
                     closeModalEditComment={this.closeModalEditComment}
                     comment={this.state.commentEditing} />
-
+                
             </div>
-
+        ) :( <NoFound />)}
+    
+            </div>)}
+            </div>
         )
 
 

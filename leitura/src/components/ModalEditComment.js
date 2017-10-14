@@ -32,6 +32,7 @@ class ModalEditComment extends Component {
 
     afterOpenModal = () => {
         const { comment } = this.props
+        console.log("afterModalOpen: "+JSON.stringify(comment))
         this.setState({
             id: comment.id,
             body: comment.body

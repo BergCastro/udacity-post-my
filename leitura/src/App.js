@@ -4,9 +4,10 @@ import Home from './components/Home'
 import ByCategory from './components/ByCategory'
 import Post from './components/Post'
 import AlertContainer from 'react-alert'
+import NoFound from './components/NoFound'
 
 
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 class App extends Component {
   
@@ -28,13 +29,19 @@ class App extends Component {
 
   render() {
     const PostId = ({ match }) => {
-      return <Post showAlert={this.showAlert} id={match.params.id} />
+      return <Post showAlert={this.showAlert} category={match.params.category} id={match.params.id} />
     }
    
 
     return (
+      
+      
+      
+      
       <div>
-        <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
+      
+      <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
+      <Switch>
         <Route exact path='/' render={() => (
           <Home showAlert={this.showAlert} />
         )} />
@@ -43,10 +50,13 @@ class App extends Component {
           <ByCategory showAlert={this.showAlert} />
         )} />
 
-        <Route path='/post/:id' component={PostId} />
-
+        <Route path='/:category/:id' component={PostId} />
+        <Route component={NoFound}/>
+        </Switch>
+       
       </div>
-
+      
+        
     )
   }
 }

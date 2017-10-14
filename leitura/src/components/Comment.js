@@ -1,16 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 import VoteScore from './VoteScore'
 
 
 
-class Comment extends Component {
+function Comment(props){
 
-
-
-
-
-    render() {
-        const { comment, handlerRemoveComment, openModalEditComment } = this.props
+   
+        const { comment, handlerRemoveComment, openModalEditComment } = props
 
         return (
 
@@ -38,10 +34,11 @@ class Comment extends Component {
 
             </div>
 
+        
+    
         )
+    
 
-
-    }
 }
 
 export default Comment
